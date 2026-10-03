@@ -1,0 +1,1 @@
+<!doctype html><html><body><h2>Secure fix</h2><p>Replace the vulnerable line with:</p><pre>message.textContent = 'Login failed for: ' + email;</pre><p>textContent treats the input as text instead of HTML, so a script payload is displayed rather than executed.</p></body></html>

@@ -1,0 +1,7 @@
+{
+  "name": "juice-shop-hw2b-login",
+  "version": "1.0.0",
+  "description": "Simple login form for HW 2B with client/server validation and an intentionally vulnerable XSS reflection for security testing.",
+  "main": "server.js",
+  "scripts": {"start": "node server.js"}
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HW 2B Login</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:20px}
+    form{display:flex;flex-direction:column;gap:12px} input,button{padding:10px;font-size:16px}
+    #message{margin-top:18px;min-height:24px}
+  </style>
+</head>
+<body>
+  <h1>Login</h1>
+  <p>This page intentionally contains an XSS reflection for Part 3 testing.</p>
+  <form id="loginForm">
+    <label>Email <input id="email" type="text" required></label>
+    <label>Password <input id="password" type="password" minlength="8" required></label>
+    <button type="submit">Log in</button>
+  </form>
+  <div id="message"></div>
+  <script>
+    const form = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        message.textContent = 'Email and password are required.';
+        return;
+      }
+      if (!email.includes('@')) {
+        message.textContent = 'Email must contain @.';
+        return;
+      }
+      if (password.length < 8) {
+        message.textContent = 'Password must be at least 8 characters.';
+        return;
+      }
+
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, password })
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        message.textContent = data.message;
+      } else {
+        // Intentionally unsafe for Part 3: email is inserted as HTML.
+        message.innerHTML = 'Login failed for: ' + email;
+      }
+    });
+  </script>
+</body>
+</html>
